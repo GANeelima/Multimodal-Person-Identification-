@@ -5,7 +5,7 @@ Database used: IEMOCAP
 
 Directory Structure:
 
-![image](https://github.com/GANeelima/Multimodal-Person-Identification-/assets/114975668/d2cc140d-a5be-4d66-8bb4-ffecea6b2856)
+![image](https://github.com/GANeelima/Multimodal-Person-Identification-/assets/114975668/c16e1c25-563d-46dc-a1f8-2690094ff13f)
 
 
 ### Environment:
