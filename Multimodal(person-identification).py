@@ -63,7 +63,6 @@ def parse_evaluation_transcript(eval_lines, transcript_lines):
 
             metadata[uttr_id] = {'start_time': start_time, 'end_time': end_time, 'speaker_id': speaker_id}
 
-
     # Parse Transcript
     for line in transcript_lines:
         tokens = line.split(':')
@@ -72,11 +71,18 @@ def parse_evaluation_transcript(eval_lines, transcript_lines):
             continue
         text = tokens[-1].strip()
 
+        # Extract speaker information from uttr_id (if not already extracted from evaluation)
+        if uttr_id not in metadata:
+            speaker_id = uttr_id.split("_")[0]
+            metadata[uttr_id] = {'speaker_id': speaker_id}
+
         try:
+            # If the uttr_id exists in metadata, update the text
             metadata[uttr_id]['text'] = text
         except KeyError:
-            print(f'KeyError: {uttr_id}')
-    print(metadata)
+            # If the uttr_id doesn't exist in metadata, create a new entry
+            metadata[uttr_id] = {'text': text, 'speaker_id': speaker_id}
+
     return metadata
 
 
