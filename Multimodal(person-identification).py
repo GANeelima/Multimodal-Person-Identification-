@@ -62,7 +62,6 @@ def parse_evaluation_transcript(eval_lines, transcript_lines):
             speaker_id = uttr_id.split("_")[0]
 
             metadata[uttr_id] = {'start_time': start_time, 'end_time': end_time, 'speaker_id': speaker_id}
-            print(label)
 
 
     # Parse Transcript
@@ -185,11 +184,6 @@ pickle.dump(all_metas, open(f'{output_path}/meta.pkl','wb'))
 !pip install tabulate
 !pip install scikit-learn
 
-!python /content/drive/MyDrive/Multimodal-End2end-Sparse/src/utils.py
-
-!python /content/drive/MyDrive/Multimodal-End2end-Sparse/src/evaluate.py
-
-!python /content/drive/MyDrive/Multimodal-End2end-Sparse/src/models/e2e_t.py
 
 !python /content/drive/MyDrive/Multimodal-End2end-Sparse/main.py
 
