@@ -4,7 +4,7 @@ import torch
 import numpy as np
 from torch.utils.data import DataLoader
 from src.cli import get_args
-from src.datasets import get_dataset_iemocap, collate_fn, HCFDataLoader, get_dataset_mosei, collate_fn_hcf_mosei
+from src.datasets import get_dataset_iemocap, collate_fn, HCFDataLoader
 # from src.models.e2e import MME2E
 from src.models.sparse_e2e import MME2E_Sparse
 from src.models.e2e import MME2E
@@ -14,7 +14,6 @@ from src.trainers.emotiontrainer import IemocapTrainer
 
 if __name__ == "__main__":
     start = time.time()
-
 
     args = get_args()
 
@@ -55,14 +54,7 @@ if __name__ == "__main__":
                                       num_workers=2, collate_fn=collate_fn)
             test_loader = DataLoader(test_dataset, batch_size=args['batch_size'], shuffle=False,
                                      num_workers=2, collate_fn=collate_fn)
-    elif args['dataset'] == 'mosei':
-        train_dataset = get_dataset_mosei(data_folder=args['datapath'], phase='train', img_interval=args['img_interval'], hand_crafted_features=args['hand_crafted'])
-        valid_dataset = get_dataset_mosei(data_folder=args['datapath'], phase='valid', img_interval=args['img_interval'], hand_crafted_features=args['hand_crafted'])
-        test_dataset = get_dataset_mosei(data_folder=args['datapath'], phase='test', img_interval=args['img_interval'], hand_crafted_features=args['hand_crafted'])
-
-        train_loader = DataLoader(train_dataset, batch_size=args['batch_size'], shuffle=True, num_workers=2, collate_fn=collate_fn_hcf_mosei if args['hand_crafted'] else collate_fn)
-        valid_loader = DataLoader(valid_dataset, batch_size=args['batch_size'], shuffle=False, num_workers=2, collate_fn=collate_fn_hcf_mosei if args['hand_crafted'] else collate_fn)
-        test_loader = DataLoader(test_dataset, batch_size=args['batch_size'], shuffle=False, num_workers=2, collate_fn=collate_fn_hcf_mosei if args['hand_crafted'] else collate_fn)
+    
 
     print(f'# Train samples = {len(train_loader.dataset)}')
     print(f'# Valid samples = {len(valid_loader.dataset)}')
