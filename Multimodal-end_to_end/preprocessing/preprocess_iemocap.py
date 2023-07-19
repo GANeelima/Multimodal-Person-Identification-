@@ -8,14 +8,15 @@ from scipy.io import wavfile
 from tqdm import tqdm
 
 
+
 def read_video(file_name):
     vidcap = cv2.VideoCapture(file_name)
 
     # Read FPS
     (major_ver, minor_ver, subminor_ver) = (cv2.__version__).split('.')
-    if int(major_ver) < 3:
+    if int(major_ver)  < 3 :
         fps = vidcap.get(cv2.cv.CV_CAP_PROP_FPS)
-    else:
+    else :
         fps = vidcap.get(cv2.CAP_PROP_FPS)
 
     # Read image data
@@ -25,7 +26,6 @@ def read_video(file_name):
         images.append(image)
         success, image = vidcap.read()
     return np.stack(images), fps
-
 
 def parse_evaluation_transcript(eval_lines, transcript_lines):
     metadata = {}
@@ -37,11 +37,13 @@ def parse_evaluation_transcript(eval_lines, transcript_lines):
             time_tokens = tokens[0][1:-1].split(' ')
             start_time, end_time = float(time_tokens[0]), float(time_tokens[2])
             uttr_id, label = tokens[1], tokens[2]
+
+            # Extract speaker information
             speaker_id = uttr_id.split("_")[0]
+
             metadata[uttr_id] = {'start_time': start_time, 'end_time': end_time, 'speaker_id': speaker_id}
 
     # Parse Transcript
-    trans = []
     for line in transcript_lines:
         tokens = line.split(':')
         uttr_id = tokens[0].split(' ')[0]
@@ -49,12 +51,22 @@ def parse_evaluation_transcript(eval_lines, transcript_lines):
             continue
         text = tokens[-1].strip()
 
+        # Extract speaker information from uttr_id (if not already extracted from evaluation)
+        if uttr_id not in metadata:
+            speaker_id = uttr_id.split("_")[0]
+            metadata[uttr_id] = {'speaker_id': speaker_id}
+
         try:
+            # If the uttr_id exists in metadata, update the text
             metadata[uttr_id]['text'] = text
         except KeyError:
-            print(f'KeyError: {uttr_id}')
-    print(metadata)
+            # If the uttr_id doesn't exist in metadata, create a new entry
+            metadata[uttr_id] = {'text': text, 'speaker_id': speaker_id}
+
     return metadata
+    
+
+
 
 
 def retrieve_audio(signal, sr, start_time, end_time):
@@ -63,38 +75,33 @@ def retrieve_audio(signal, sr, start_time, end_time):
     audio_segment = signal[start_idx:end_idx]
     return audio_segment, sr
 
-
 def retrieve_video(frames, fps, start_time, end_time):
     start_idx = int(fps * start_time)
     end_idx = int(fps * end_time)
-    images = frames[start_idx:end_idx, :, :, :]
+    images = frames[start_idx:end_idx,:,:,:]
     return images, fps
-
 
 def dump_image_audio(uttr_id, audio_segment, sr, img_segment, img_segment_L, img_segment_R, fps, out_path='./', grayscale=False):
     out_path = f'{out_path}/{"_".join(uttr_id.split("_")[:2])}'
     if not os.path.exists(f'./{out_path}/{uttr_id}'):
-
-        os.mkdir(f'./{out_path}/{uttr_id}')
+        os.makedirs(f'./{out_path}/{uttr_id}')
     wavfile.write(f'./{out_path}/{uttr_id}/audio.wav', sr, audio_segment)
-    wavfile.write(f'./{out_path}/{uttr_id}/audio_L.wav', sr, audio_segment[:, 0])
-    wavfile.write(f'./{out_path}/{uttr_id}/audio_R.wav', sr, audio_segment[:, 1])
+    wavfile.write(f'./{out_path}/{uttr_id}/audio_L.wav', sr, audio_segment[:,0])
+    wavfile.write(f'./{out_path}/{uttr_id}/audio_R.wav', sr, audio_segment[:,1])
     for i in range(img_segment.shape[0]):
-        imgL = img_segment_L[i, :, :, :]
-        imgR = img_segment_R[i, :, :, :]
+#         cv2.imwrite(f'./{out_path}/{uttr_id}/image_{i}.jpg', img_segment[i,:,:,:])
+        imgL = img_segment_L[i,:,:,:]
+        imgR = img_segment_R[i,:,:,:]
         if grayscale:
             imgL = rgb2gray(imgL)
             imgR = rgb2gray(imgR)
         cv2.imwrite(f'./{out_path}/{uttr_id}/image_L_{i}.jpg', imgL)
         cv2.imwrite(f'./{out_path}/{uttr_id}/image_R_{i}.jpg', imgR)
 
-
-
 def rgb2gray(rgb):
-    r, g, b = rgb[:, :, 0], rgb[:, :, 1], rgb[:, :, 2]
+    r, g, b = rgb[:,:,0], rgb[:,:,1], rgb[:,:,2]
     gray = 0.2989 * r + 0.5870 * g + 0.1140 * b
     return gray
-
 
 def crop(imgs, target_size=224):
     # imgs.shape = (180, 480, 360, 3)
@@ -105,17 +112,20 @@ def crop(imgs, target_size=224):
     return imgs
 
 
-output_path = './IEMOCAP_PREPROCESS'
+# Process multimodal data over all sessions
+# NOTE: This might take several hours to run, the time listed on this cell is for processing 5 label files
+output_path =  '/content/drive/MyDrive/sample_folder_preprocess/IEMOCAP_PREPROCESS'
+
 
 if not os.path.exists(output_path):
     os.makedirs(output_path)
 
 all_metas = {}
-for base_path in glob.glob('../IEMOCAP/IEMOCAP_full_release/Session*'):
-    avi_path = f'{base_path}/dialog/avi/DivX'
-    script_path = f'{base_path}/dialog/transcriptions'
-    wav_path = f'{base_path}/Session*/dialog/wav'
-    label_path = f'{base_path}Session*/dialog/EmoEvaluation'
+for base_path in glob.glob('/content/drive/MyDrive/sample folder preprocess*'):
+    avi_path = '/content/drive/MyDrive/sample folder preprocess/dialog/avi'
+    script_path = '/content/drive/MyDrive/sample folder preprocess/dialog/transcriptions'
+    wav_path = '/content/drive/MyDrive/sample folder preprocess/dialog/wav'
+    label_path = '/content/drive/MyDrive/sample folder preprocess/dialog/Emo_evaluation'
 
     for eval_fname in tqdm(glob.glob(f'{label_path}/*.txt')):
         avi_fname = f'{avi_path}/{eval_fname.split("/")[-1].replace(".txt", ".avi")}'
@@ -124,7 +134,7 @@ for base_path in glob.glob('../IEMOCAP/IEMOCAP_full_release/Session*'):
 
         eval_lines = open(eval_fname).readlines()
         transcript_lines = open(script_fname).readlines()
-        sr, signal = wavfile.read(wav_fname)
+        sr, signal  = wavfile.read(wav_fname)
 
         images, fps = read_video(avi_fname)
 
@@ -137,16 +147,13 @@ for base_path in glob.glob('../IEMOCAP/IEMOCAP_full_release/Session*'):
             metadata['sr'] = sr
 
             img_segment, fps = retrieve_video(images, fps, metadata['start_time'], metadata['end_time'])
-            img_segment_L, img_segment_R = img_segment[:, :, :img_segment.shape[2] // 2, :], img_segment[:, :,
-                                                                                             img_segment.shape[2] // 2:,
-                                                                                             :]
+            img_segment_L, img_segment_R = img_segment[:,:,:img_segment.shape[2] // 2,:], img_segment[:,:,img_segment.shape[2] // 2:,:]
             img_segment_L = crop(img_segment_L)
             img_segment_R = crop(img_segment_R)
             metadata['fps'] = fps
 
-            dump_image_audio(uttr_id, audio_segment, sr, img_segment, img_segment_L, img_segment_R, fps,
-                             out_path=output_path)
+            dump_image_audio(uttr_id, audio_segment, sr, img_segment, img_segment_L, img_segment_R, fps, out_path=output_path)
 
         # Update all metas
         all_metas.update(metas)
-pickle.dump(all_metas, open(f'{output_path}/meta.pkl', 'wb'))
+pickle.dump(all_metas, open(f'{output_path}/meta.pkl','wb'))
