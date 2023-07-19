@@ -28,7 +28,11 @@ Directory Structure:
   ```
   
 * facenet-pytorch 2.3.0
-
+* sentencepiece
+  
+  ```console
+  !pip install sentencepiece
+  ```
 #### Creating venv in colab:
 
 ```console
