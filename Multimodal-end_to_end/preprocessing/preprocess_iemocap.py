@@ -114,6 +114,20 @@ def crop(imgs, target_size=224):
 
 # Process multimodal data over all sessions
 # NOTE: This might take several hours to run, the time listed on this cell is for processing 5 label files
+''' Original dataset path: 
+output_path = './IEMOCAP_PREPROCESS'
+
+if not os.path.exists(output_path):
+    os.makedirs(output_path)
+    
+all_metas = {}
+for base_path in glob.glob('../data/IEMOCAP_full_release/Session*'):
+    avi_path = f'{base_path}/dialog/avi/DivX'
+    script_path = f'{base_path}/dialog/transcriptions'
+    wav_path = f'{base_path}/dialog/wav'
+    label_path = f'{base_path}/dialog/EmoEvaluation/''''
+
+
 output_path =  '/content/drive/MyDrive/sample_folder_preprocess/IEMOCAP_PREPROCESS'
 
 
