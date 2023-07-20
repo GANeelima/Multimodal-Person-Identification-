@@ -191,7 +191,7 @@ def collate_fn(batch):
         torch.cat(specgrams, dim=0),
         specgramSeqLens,
         texts,
-        torch.tensor(np.array(labels), dtype=torch.float32)
+        torch.tensor(labels, dtype=torch.float32)
     )
 
 class IEMOCAP_baseline(Dataset):
