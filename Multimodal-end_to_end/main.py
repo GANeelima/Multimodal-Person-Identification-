@@ -10,7 +10,7 @@ from src.models.sparse_e2e import MME2E_Sparse
 from src.models.e2e import MME2E
 from src.models.baselines.lf_rnn import LF_RNN
 from src.models.baselines.lf_transformer import LF_Transformer
-from src.trainers.emotiontrainer import IemocapTrainer
+from src.trainers.person_id_trainer import IemocapTrainer
 
 if __name__ == "__main__":
     start = time.time()
