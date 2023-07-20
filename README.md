@@ -7,6 +7,7 @@ To enable seamless end-to-end training, we carefully reorganize the IEMOCAP data
 To address potential computational challenges associated with the end-to-end model, we introduce a novel sparse cross-modal attention technique for feature extraction. This technique allows us to focus on the most relevant and informative elements across modalities while reducing the computational complexity. As a result, the model becomes more efficient and scalable, making it suitable for large-scale person identification tasks.
 
 In summary, our work presents a comprehensive and efficient solution for person identification based on multimodal analysis using the IEMOCAP dataset. By combining feature extraction and end-to-end learning in an integrated manner, we aim to achieve superior performance in identifying individuals accurately and reliably across different modalities. 
+## Paper link and Database
 
 Multimodal End-to-End Sparse Model, by Wenliang Dai *, Samuel Cahyawijaya *, Zihan Liu, Pascale Fung.
 
@@ -27,7 +28,7 @@ Directory Structure:
 
 
 
-### Environment:
+## Environment:
 
 * Python 3.7
 * PyTorch 1.6.0
