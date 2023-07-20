@@ -1,7 +1,13 @@
 # Multimodal-(Person-Identification)
-Dataset can be downloaded from here: [link for dataset](https://sail.usc.edu/iemocap/)
+Multimodal End-to-End Sparse Model, by Wenliang Dai *, Samuel Cahyawijaya *, Zihan Liu, Pascale Fung.
 
-Database used: IEMOCAP
+Link for the research paper: [https://arxiv.org/pdf/2103.09666.pdf](https://arxiv.org/pdf/2103.09666.pdf)
+
+To know more about the IEMOCAP dataset, click here:
+[IEMOCAP](https://sail.usc.edu/iemocap/)
+
+
+
 
 Directory Structure:
 
