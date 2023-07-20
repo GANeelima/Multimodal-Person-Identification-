@@ -131,6 +131,7 @@ def crop(imgs, target_size=224):
 
 # Process multimodal data over all sessions
 # NOTE: This might take several hours to run, the time listed on this cell is for processing 5 label files
+#give the file paths as per your system's covenience.
 output_path =  '/content/drive/MyDrive/sample_folder_preprocess/IEMOCAP_PREPROCESS'
 
 
