@@ -1,4 +1,13 @@
-# Multimodal-(Person-Identification)
+# Person Identification based on Multimodal analysis
+
+In this project, we propose an innovative fully end-to-end model that effectively integrates feature extraction and optimization phases for person identification using multiple modalities of data from the IEMOCAP dataset. Our goal is to enhance the overall performance of multimodal affective computing tasks by jointly optimizing these steps.
+
+To enable seamless end-to-end training, we carefully reorganize the IEMOCAP dataset, ensuring better alignment between different modalities and the target task of person identification. This reorganization facilitates more effective integration of information from various data sources, leading to improved accuracy in identifying individuals.
+
+To address potential computational challenges associated with the end-to-end model, we introduce a novel sparse cross-modal attention technique for feature extraction. This technique allows us to focus on the most relevant and informative elements across modalities while reducing the computational complexity. As a result, the model becomes more efficient and scalable, making it suitable for large-scale person identification tasks.
+
+In summary, our work presents a comprehensive and efficient solution for person identification based on multimodal analysis using the IEMOCAP dataset. By combining feature extraction and end-to-end learning in an integrated manner, we aim to achieve superior performance in identifying individuals accurately and reliably across different modalities. 
+
 Multimodal End-to-End Sparse Model, by Wenliang Dai *, Samuel Cahyawijaya *, Zihan Liu, Pascale Fung.
 
 Link for the research paper: [https://arxiv.org/pdf/2103.09666.pdf](https://arxiv.org/pdf/2103.09666.pdf)
@@ -13,7 +22,9 @@ To download the dataset, you can fill the form below for the owner to provide wi
 
 Directory Structure:
 
-![image](https://github.com/GANeelima/Multimodal-Person-Identification-/assets/114975668/c16e1c25-563d-46dc-a1f8-2690094ff13f)
+![image](https://github.com/GANeelima/Multimodal-Person-Identification-/assets/114975668/fa031994-6423-4802-8612-40221fe65703)
+
+
 
 
 ### Environment:
