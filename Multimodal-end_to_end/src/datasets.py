@@ -17,12 +17,11 @@ def getSpeakerID() -> Dict[str, int]:
     return {'Ses01F':0, 'Ses01M':1, 'Ses02F':2, 'Ses02M':3, 'Ses03F':4, 'Ses03M':5, 'Ses04F':6, 'Ses04M':7, 'Ses05F':8, 'Ses05M':9}
 
 def get_dataset_iemocap(data_folder: str, phase: str, img_interval: int, hand_crafted_features: Optional[bool] = False):
-    data_folder='/content/drive/MyDrive/sample folder preprocess'
-    main_folder = os.path.join(data_folder, '/content/content/drive/MyDrive/sample_folder_preprocess/IEMOCAP_PREPROCESS')
-    meta = load(os.path.join(main_folder, '/content/drive/MyDrive/sample_folder_preprocess/IEMOCAP_PREPROCESS/meta.pkl'))
+    main_folder = os.path.join(data_folder, 'IEMOCAP_RAW_PROCESSED')
+    meta = load(os.path.join(main_folder, 'meta.pkl'))
 
     speakerID = getSpeakerID()
-    uttr_ids = open(os.path.join(data_folder, '/content/drive/MyDrive/Multimodal-End2end-Sparse/data split/IEMOCAP_split', f'{phase}_split.txt'), 'r').read().splitlines()
+    uttr_ids = open(os.path.join(data_folder, 'IEMOCAP_SPLIT', f'{phase}_split.txt'), 'r').read().splitlines()
     texts = [meta[uttr_id]['text'] for uttr_id in uttr_ids]
     labels = [speakerID[meta[uttr_id]['speaker_id']] for uttr_id in uttr_ids]
     
